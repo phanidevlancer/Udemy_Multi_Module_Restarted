@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Udemy_Multi_Module_Dairy_Restarted</string>
+    <string name="app_name">DiaryAppPhani</string>
+    <string name="auth_title">Welcome back</string>
+    <string name="auth_subtitle">Please sign in to continue.</string>
 </resources>
