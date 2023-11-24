@@ -34,7 +34,7 @@ fun AuthenticationScreen(
         state = oneTapState,
         clientId = CLIENT_ID,
         onTokenIdReceived = { tokenId ->
-            onTokenReceived("LoggedIn Successfully")
+            onTokenReceived(tokenId)
         },
         onDialogDismissed = { message ->
             onDialogDismissed(message)
