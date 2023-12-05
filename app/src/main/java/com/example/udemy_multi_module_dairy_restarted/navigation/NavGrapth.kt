@@ -3,6 +3,7 @@ package com.example.udemy_multi_module_dairy_restarted.navigation
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,10 +16,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.udemy_multi_module_dairy_restarted.data.repository.MongoDB
 import com.example.udemy_multi_module_dairy_restarted.presentation.components.DisplayAlertDialog
 import com.example.udemy_multi_module_dairy_restarted.presentation.screens.auth.AuthenticationScreen
 import com.example.udemy_multi_module_dairy_restarted.presentation.screens.auth.AuthenticationViewModel
 import com.example.udemy_multi_module_dairy_restarted.presentation.screens.home.HomeScreen
+import com.example.udemy_multi_module_dairy_restarted.presentation.screens.home.HomeViewModel
 import com.example.udemy_multi_module_dairy_restarted.utils.Constants.APP_ID
 import com.example.udemy_multi_module_dairy_restarted.utils.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.stevdzasan.messagebar.rememberMessageBarState
@@ -85,12 +88,15 @@ fun NavGraphBuilder.home(
     navigateToAuth: () -> Unit
 ) {
     composable(route = Screen.Home.route) {
+        val viewModel : HomeViewModel = viewModel()
+        val diaries by viewModel.diaries
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
         val scope = rememberCoroutineScope()
         var openAlert by remember {
             mutableStateOf(false)
         }
         HomeScreen(
+            diaries = diaries,
             onMenuClicked = {
                 scope.launch {
                     println("drawerState opem")

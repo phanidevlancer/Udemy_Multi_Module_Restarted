@@ -92,7 +92,7 @@ fun DiaryHolder(dairy: Diary, onClick: (String) -> Unit) {
                 }
 
                 AnimatedVisibility(visible = galleryOpened) {
-                    Column(modifier = Modifier.padding(all = 14.dp)) {
+                    Column(modifier = Modifier.padding(horizontal = 4.dp).padding(bottom = 14.dp)) {
                         Gallery(images = dairy.images)
                     }
                 }

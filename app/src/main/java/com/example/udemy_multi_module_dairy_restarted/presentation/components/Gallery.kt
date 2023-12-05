@@ -1,11 +1,16 @@
 package com.example.udemy_multi_module_dairy_restarted.presentation.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerBasedShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Surface
@@ -16,6 +21,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -33,7 +41,8 @@ fun Gallery(
     spaceBetween: Dp = 10.dp,
     imageShape: CornerBasedShape = Shapes().small
 ) {
-    BoxWithConstraints(modifier) {
+    BoxWithConstraints(modifier.fillMaxWidth()) {
+        println("My max width is : "+this.maxWidth)
         val numberOfVisibleImages = remember {
             derivedStateOf {
                 max(
@@ -42,36 +51,40 @@ fun Gallery(
                 )
             }
         }
-
         val remainingImages = remember {
             derivedStateOf {
                 images.size - numberOfVisibleImages.value
             }
         }
 
-        images.take(numberOfVisibleImages.value).forEach { image ->
-            AsyncImage(
-                modifier = Modifier
-                    .clip(imageShape)
-                    .size(imageSize),
-                model = ImageRequest
-                    .Builder(LocalContext.current)
-                    .data(image)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = "Gallery image"
-            )
+        Row (modifier = Modifier
+            .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center){
+            images.take(numberOfVisibleImages.value).forEach { image ->
+                AsyncImage(
+                    modifier = Modifier
+                        .shadow(4.dp, shape = RoundedCornerShape(4.dp))
+                        .clip(imageShape)
+                        .size(imageSize),
+                    model = ImageRequest
+                        .Builder(LocalContext.current)
+                        .data(image)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = "Gallery image"
+                )
 
-            Spacer(modifier = Modifier.width(spaceBetween))
+                Spacer(modifier = Modifier.width(spaceBetween))
 
-        }
+            }
 
-        if (remainingImages.value > 0) {
-            LastImageOverlay(
-                imageSize = imageSize,
-                imageShape = imageShape,
-                remainingImages = remainingImages.value
-            )
+            if (remainingImages.value > 0) {
+                LastImageOverlay(
+                    imageSize = imageSize,
+                    imageShape = imageShape,
+                    remainingImages = remainingImages.value
+                )
+            }
         }
     }
 }
