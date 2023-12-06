@@ -1,6 +1,10 @@
 package com.example.udemy_multi_module_dairy_restarted.presentation.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -91,7 +95,14 @@ fun DiaryHolder(dairy: Diary, onClick: (String) -> Unit) {
                     )
                 }
 
-                AnimatedVisibility(visible = galleryOpened) {
+                AnimatedVisibility(visible = galleryOpened,
+                    enter = fadeIn() + expandVertically(
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioMediumBouncy,
+                            stiffness = Spring.StiffnessLow
+                        )
+                    )
+                ) {
                     Column(modifier = Modifier.padding(horizontal = 4.dp).padding(bottom = 14.dp)) {
                         Gallery(images = dairy.images)
                     }
