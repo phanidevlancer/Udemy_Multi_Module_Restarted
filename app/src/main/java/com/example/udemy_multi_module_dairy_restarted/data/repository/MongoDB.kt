@@ -9,12 +9,10 @@ import io.realm.kotlin.ext.query
 import io.realm.kotlin.ext.realmListOf
 import io.realm.kotlin.log.LogLevel
 import io.realm.kotlin.mongodb.App
-import io.realm.kotlin.mongodb.User
 import io.realm.kotlin.mongodb.sync.SyncConfiguration
 import io.realm.kotlin.query.Sort
 import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import java.time.ZoneId
@@ -34,7 +32,7 @@ object MongoDB : MongoRepository {
             val config =
                 SyncConfiguration.Builder(user, setOf(Diary::class)).initialSubscriptions { sub ->
                     add(
-                        query = sub.query<Diary>("ownerId == $0", user.identity),
+                        query = sub.query<Diary>(query = "ownerId == $0", user.identity),
                         name = "User's Dairies"
                     )
                 }.log(LogLevel.ALL).build()
@@ -78,28 +76,21 @@ object MongoDB : MongoRepository {
     override fun getAllDiaries(): Flow<Diaries> {
         return if (user != null) {
             try {
-                println("my user id is : ${user}")
+                println("my user id is : ${realm.configuration.path}")
+                realm.configuration.schema
                 realm.query<Diary>(query = "ownerId == $0", user.identity)
-                    .sort(property = "date", sortOrder = Sort.DESCENDING)
-                    .asFlow()
-                    .map { result ->
+                    .sort(property = "date", sortOrder = Sort.DESCENDING).asFlow().map { result ->
                         println("my user id is : ${result.list}")
-                        RequestState.Success(
-                            data = if (result.list.isEmpty()) {
-                                val dummyList = getDummyResponse()
-                                dummyList.groupBy {
-                                    it.date.toInstant()
-                                        .atZone(ZoneId.systemDefault())
-                                        .toLocalDate()
-                                }
-                            } else {
-                                result.list.groupBy {
-                                    it.date.toInstant()
-                                        .atZone(ZoneId.systemDefault())
-                                        .toLocalDate()
-                                }
+                        RequestState.Success(data = if (result.list.isEmpty()) {
+                            val dummyList = getDummyResponse()
+                            dummyList.groupBy {
+                                it.date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
                             }
-                        )
+                        } else {
+                            result.list.groupBy {
+                                it.date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                            }
+                        })
                     }
             } catch (e: Exception) {
                 flow { emit(RequestState.Error(e)) }

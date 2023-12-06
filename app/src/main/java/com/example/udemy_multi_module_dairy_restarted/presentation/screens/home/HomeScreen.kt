@@ -92,7 +92,7 @@ fun NavigationDrawer(
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            ModalDrawerSheet(Modifier.fillMaxWidth(0.8f)) {
+            ModalDrawerSheet {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(),
