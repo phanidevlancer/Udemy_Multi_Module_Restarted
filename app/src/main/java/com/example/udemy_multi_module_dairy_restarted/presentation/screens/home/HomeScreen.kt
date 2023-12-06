@@ -3,8 +3,10 @@ package com.example.udemy_multi_module_dairy_restarted.presentation.screens.home
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,9 +26,14 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.example.udemy_multi_module_dairy_restarted.R
 import com.example.udemy_multi_module_dairy_restarted.data.repository.Diaries
@@ -42,6 +49,7 @@ fun HomeScreen(
     drawerState: DrawerState,
     onSignOutClick: () -> Unit
 ) {
+    var padding by remember { mutableStateOf(PaddingValues()) }
     NavigationDrawer(
         drawerState = drawerState,
         onSignOutClick = onSignOutClick
@@ -49,10 +57,13 @@ fun HomeScreen(
         Scaffold(topBar = {
             HomeTopBar(onMenuClicked)
         }, floatingActionButton = {
-            FloatingActionButton(onClick = navigateToWrite) {
+            FloatingActionButton(
+                modifier = Modifier.padding(end = padding.calculateEndPadding(LayoutDirection.Ltr)),
+                onClick = navigateToWrite) {
                 Icon(imageVector = Icons.Default.Create, contentDescription = "Write Icon")
             }
         }, content = {
+            padding = it
             when (diaries) {
                 is RequestState.Success -> {
                     HomeContent(
