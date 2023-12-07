@@ -25,6 +25,8 @@ import com.example.udemy_multi_module_dairy_restarted.presentation.screens.home.
 import com.example.udemy_multi_module_dairy_restarted.presentation.screens.write.WriteScreen
 import com.example.udemy_multi_module_dairy_restarted.utils.Constants.APP_ID
 import com.example.udemy_multi_module_dairy_restarted.utils.Constants.WRITE_SCREEN_ARGUMENT_KEY
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.rememberPagerState
 import com.stevdzasan.messagebar.rememberMessageBarState
 import com.stevdzasan.onetap.rememberOneTapSignInState
 import io.realm.kotlin.mongodb.App
@@ -142,6 +144,7 @@ fun NavGraphBuilder.home(
     }
 }
 
+@OptIn(ExperimentalPagerApi::class)
 fun NavGraphBuilder.write(
     onBackPressed: () -> Unit
 ) {
@@ -154,8 +157,11 @@ fun NavGraphBuilder.write(
         }),
 
         ) {
+        val pagerState = rememberPagerState()
+
         WriteScreen(
             onBackPressed = onBackPressed,
+            pagerState = pagerState,
             onDeleteConfirmed = {
 
             })

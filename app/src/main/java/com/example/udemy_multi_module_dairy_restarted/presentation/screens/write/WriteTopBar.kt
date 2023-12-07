@@ -25,11 +25,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.example.udemy_multi_module_dairy_restarted.model.Diary
 import com.example.udemy_multi_module_dairy_restarted.presentation.components.DisplayAlertDialog
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.PagerState
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPagerApi::class)
 @Composable
 fun WriteTopBar(
     selectedDiary: Diary? = null,
+    pagerState: PagerState,
     onDeleteConfirmed: () -> Unit,
     onBackPressed: () -> Unit
 ) {
