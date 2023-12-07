@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
-import com.example.udemy_multi_module_dairy_restarted.data.repository.MongoDB
 import com.example.udemy_multi_module_dairy_restarted.navigation.Screen
 import com.example.udemy_multi_module_dairy_restarted.navigation.setupNavGraph
 import com.example.udemy_multi_module_dairy_restarted.ui.theme.Udemy_Multi_Module_Dairy_RestartedTheme
